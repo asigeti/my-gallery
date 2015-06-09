@@ -1,0 +1,51 @@
+
+<script src="app/directives/myGallery/resources/galleryModal/galleryModalCtrl.js"></script>
+<script src="app/directives/myGallery/resources/deleteImageModal/deleteImageModalCtrl.js"></script>
+
+<link rel="stylesheet" href="app/directives/myGallery/resources/deleteImageModal/deleteImageModalStyle.less">
+<link rel="stylesheet" href="app/directives/myGallery/resources/galleryModal/galleryModal.css">
+
+
+<link href="http://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet" type="text/css">
+<div class="my-gallery" >
+  <div class="my-gallery-header-container">
+    <h1 class="my-gallery-header"> My Gallery</h1>
+  </div>
+  <div class="my-gallery-content-container" ng-hide="slideShowOn">
+    <div class="my-gallery-controllers-container">
+      <input class="my-gallery-search-box" placeholder="Enter image name or date" ng-model="searchText" ng-show="search">
+      <div class="my-gallery-select-container" ng-show="sorting">
+        <select ng-model="sortGallery">
+          <option value="title">Title</option>
+          <option value="date">Date</option>
+        </select>
+      </div>
+    </div>
+    <img src="../app/directives/myGallery/resources/images/Play.png"  class="my-gallery-play-silde-show-image" ng-click="setGallerySlideShow()">
+    <div class="my-gallery-images-container">
+      <div class="my-gallery-image-item"  ng-animate="'animate'" dir-paginate="imageItem in displayGalleryData | itemsPerPage: itemsPerPage |orderBy:sortGallery |filter:searchText">
+        <img src="../app/directives/myGallery/resources/images/close.png" ng-click="deleteImage(imageItem)" class="my-gallery-delete-image-button">
+        <div class="polaroid" >
+          <p  class="my-gallery-ellipsis-text my-gallery-image-item-title" ng-bind="imageItem.title"></p>
+
+          <p class="my-gallery-image-item-date" ng-bind=" imageItem.date | date:'MMM d'"></p>
+          <img ng-src="{{imageItem.url}}" alt="No Image" onError="this.src='../app/directives/MyGallery/resources/images/ironSource.jpeg';" ng-click="openGalleryModal($index)">
+        </div>
+      </div>
+    </div>
+    <div class="my-gallery-pagination-container">
+      <dir-pagination-controls class="my-gallery-pagination-control"></dir-pagination-controls>
+        <select ng-options="item as item for item in ItemPerPageList" ng-model="itemsPerPage" ng-init="itemsPerPage" >
+
+        </select>
+      <span> Items per page</span>
+    </div>
+  </div>
+  <div class="my-gallery-slide-show-container" ng-show="slideShowOn">
+    <img class="my-gallery-slide-show-stop-button" src="../app/directives/myGallery/resources/images/Stop.png" ng-click="stopSlideShow()">
+    <div   ng-repeat="selectedImage in selectedImages" ng-animate="'animate'"  >
+        <img  src="{{selectedImage.url}}" alt="No Image" onError="this.src='../app/directives/MyGallery/resources/images/ironSource.jpeg';" />
+    </div>
+
+  </div>
+</div>
